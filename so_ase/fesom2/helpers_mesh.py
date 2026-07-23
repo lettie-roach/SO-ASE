@@ -178,7 +178,8 @@ def level_idx_to_depth(meshpath, which='seafloor', raw=False, write=False):
                 f.write(f'{d}\n')
         print(f'Wrote: {filename}')
 
-    return depth
+    else:
+        return depth
 
 def read_element_levels(meshpath, which='seafloor', raw=False, python_indexing=False):
     """

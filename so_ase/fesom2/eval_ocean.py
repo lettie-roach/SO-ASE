@@ -73,7 +73,7 @@ def fesom_ocean_heat_transport_as_residual(
         print(f"{mesh_diag_path}fesom.mesh.diag.nc", flush=True)
 
     # Load files for surface heat flux from src_path
-    files2load = [f"{src_path}fh.fesom.{y}.nc" for y in range(years[0], years[1])]
+    files2load = [f"{src_path}fh.fesom.{y}.nc" for y in range(years[0], years[1] + 1)]
     # Open files with cftime decoder
     time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
     ds_shf = xr.open_mfdataset(files2load, decode_times=time_coder).load()
@@ -189,7 +189,7 @@ def fesom_timeseries_of_mean_vertical_profile_in_region(
     # Open files with cftime decoder
     time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
 
-    for year in range(years[0], years[-1]):
+    for year in range(years[0], years[-1] + 1):
         # Load file for each single year
         file2load = f"{src_path}{varname}.fesom.{year}.nc"
         ds = xr.open_mfdataset(file2load, decode_times=time_coder).isel(nod2=inds).load()
@@ -222,7 +222,7 @@ def fesom_total_kinetic_energy(src_path, mesh_diag_path, meshpath, years=(1979, 
         pass
         
     # Build list of all input files
-    years_list = list(range(years[0], years[-1]))
+    years_list = list(range(years[0], years[-1] + 1))
     files_u = [f"{src_path}u.fesom.{y}.nc" for y in years_list]
     files_v = [f"{src_path}v.fesom.{y}.nc" for y in years_list]
 
@@ -272,9 +272,3 @@ def fesom_total_kinetic_energy(src_path, mesh_diag_path, meshpath, years=(1979, 
                 print(f"Skipped: {file2save}")
 
     return
-        
-    
-        
-
-        
-
