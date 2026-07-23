@@ -91,8 +91,8 @@ def fesom_sea_ice_area(
     )
 
 
-    in_files = [f"{src_path}a_ice.fesom.{year}.nc" for year in range(years[0], years[1])]
-    out_files = [f"{savepath}/sea_ice_area_{year}_{box_str}.nc" for year in range(years[0], years[1])]
+    in_files = [f"{src_path}a_ice.fesom.{year}.nc" for year in range(years[0], years[1] + 1)]
+    out_files = [f"{savepath}/sea_ice_area_{year}_{box_str}.nc" for year in range(years[0], years[1] + 1)]
     files2load = []
     files2save = []
     
@@ -141,7 +141,7 @@ def fesom_sea_ice_area(
     ds_out.attrs["siconc_threshold"] = siconc_threshold
 
     # Split the monthly data into chunks for each individual year and save as xarray dataset
-    for name, y in zip(files2save, range(years[0], years[1])):
+    for name, y in zip(files2save, range(years[0], years[1] + 1)):
         sia_year = ds_out.sel(time=ds_out.time.dt.year == y)
         sia_year.to_netcdf(name)
 
@@ -225,9 +225,9 @@ def fesom_sea_ice_volume(
         f"{format_lat(box[2])}_{format_lat(box[3])}"
     )
 
-    in_files_aice = [f"{src_path}a_ice.fesom.{year}.nc" for year in range(years[0], years[1])]
-    in_files_mice = [f"{src_path}m_ice.fesom.{year}.nc" for year in range(years[0], years[1])]
-    out_files = [f"{savepath}/sea_ice_volume_{year}_{box_str}.nc" for year in range(years[0], years[1])]
+    in_files_aice = [f"{src_path}a_ice.fesom.{year}.nc" for year in range(years[0], years[1] + 1)]
+    in_files_mice = [f"{src_path}m_ice.fesom.{year}.nc" for year in range(years[0], years[1] + 1)]
+    out_files = [f"{savepath}/sea_ice_volume_{year}_{box_str}.nc" for year in range(years[0], years[1] + 1)]
     files2load = []
     files2save = []
     
@@ -275,7 +275,7 @@ def fesom_sea_ice_volume(
     ds_out.attrs["source"] = "FESOM2"
 
     # Split the monthly data into chunks for each individual year and save as xarray dataset
-    for name, y in zip(files2save, range(years[0], years[1])):
+    for name, y in zip(files2save, range(years[0], years[1] + 1)):
         siv_year = ds_out.sel(time=ds_out.time.dt.year == y)
         siv_year.to_netcdf(name)
 
@@ -371,8 +371,8 @@ def fesom_sea_ice_extent(
         f"{format_lat(box[2])}_{format_lat(box[3])}"
     )
 
-    in_files = [f"{src_path}a_ice.fesom.{year}.nc" for year in range(years[0], years[1])]
-    out_files = [f"{savepath}/sea_ice_extent_{year}_{box_str}.nc" for year in range(years[0], years[1])]
+    in_files = [f"{src_path}a_ice.fesom.{year}.nc" for year in range(years[0], years[1] + 1)]
+    out_files = [f"{savepath}/sea_ice_extent_{year}_{box_str}.nc" for year in range(years[0], years[1] + 1)]
     files2load = []
     files2save = []
     
@@ -421,7 +421,7 @@ def fesom_sea_ice_extent(
     ds_out.attrs["siconc_threshold"] = siconc_threshold
 
     # Split the monthly data into chunks for each individual year and save as xarray dataset
-    for name, y in zip(files2save, range(years[0], years[1])):
+    for name, y in zip(files2save, range(years[0], years[1] + 1)):
         sie_year = ds_out.sel(time=ds_out.time.dt.year == y)
         sie_year.to_netcdf(name)
 

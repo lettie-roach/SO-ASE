@@ -80,40 +80,46 @@ def create_map(
             "Invalid extent: lon_min must be less than lon_max and lat_min must be less than lat_max."
         )
 
+    if not isinstance(ax, list) and not isinstance(ax, np.ndarray):
+        ax = [ax] # make it a list if it's a single axes object
+    if isinstance(ax, np.ndarray):
+        ax = ax.flatten() # flatten if it's a numpy array
+
     # set map extent
-    ax.set_extent(extent, crs=ccrs.PlateCarree())
+    for axis in ax:
+        axis.set_extent(extent, crs=ccrs.PlateCarree())
 
-    # add land/coastlines
-    if land:
-        ax.add_feature(cfeature.LAND, color=landcolor, zorder=zorder)
-    if coastline:
-        ax.add_feature(cfeature.COASTLINE, color=coastcolor, linewidth=0.5, zorder=zorder)
+        # add land/coastlines
+        if land:
+            axis.add_feature(cfeature.LAND, color=landcolor, zorder=zorder)
+        if coastline:
+            axis.add_feature(cfeature.COASTLINE, color=coastcolor, linewidth=0.5, zorder=zorder)
 
-    # add grid and grid labels
-    gl = ax.gridlines(
-        crs=ccrs.PlateCarree(),
-        draw_labels=tick_labels,
-        linewidth=.75,
-        color="lightgrey",
-        alpha=0.5,
-        linestyle=":",
-        x_inline=False,
-        y_inline=True,
-        zorder=zorder + 1,
-    )
+        # add grid and grid labels
+        gl = axis.gridlines(
+            crs=ccrs.PlateCarree(),
+            draw_labels=tick_labels,
+            linewidth=.75,
+            color="lightgrey",
+            alpha=0.5,
+            linestyle=":",
+            x_inline=False,
+            y_inline=True,
+            zorder=zorder + 1,
+        )
 
-    gl.xlocator = mticker.FixedLocator(range(-180, 180+lon_inc, lon_inc))
-    gl.ylocator = mticker.FixedLocator(range(-90, 90+lat_inc, lat_inc))
-    gl.xformatter = LONGITUDE_FORMATTER
-    gl.yformatter = LATITUDE_FORMATTER
-    gl.xlabel_style = {"size": 8, "rotation": 0}
-    gl.ylabel_style = {"size": 8, "rotation": 30}
+        gl.xlocator = mticker.FixedLocator(range(-180, 180+lon_inc, lon_inc))
+        gl.ylocator = mticker.FixedLocator(range(-90, 90+lat_inc, lat_inc))
+        gl.xformatter = LONGITUDE_FORMATTER
+        gl.yformatter = LATITUDE_FORMATTER
+        gl.xlabel_style = {"size": 8, "rotation": 0}
+        gl.ylabel_style = {"size": 8, "rotation": 30}
 
-    # make plot circular
-    if circular:
-        ax = circular_shape(ax)
+        # make plot circular
+        if circular:
+            axis = circular_shape(axis)
 
-    return ax
+    return
 
 
 def circular_shape(ax):

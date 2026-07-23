@@ -54,7 +54,7 @@ def fesom_subshelf_freshwaterflux(src_path, mesh_diag_path, mesh_path, mask, yea
     
         
     # Build list of all input/output files
-    years_list = list(range(years[0], years[-1]))
+    years_list = list(range(years[0], years[-1] + 1))
     in_files = [f"{src_path}fw.fesom.{y}.nc" for y in years_list]
     out_files = [f"{savepath}subshelf_melt_{mask['name']}.{y}.nc" for y in years_list]
     
@@ -183,7 +183,7 @@ def fesom_subshelf_heatflux(src_path, mesh_diag_path, mesh_path, mask, years=(19
     
         
     # Build list of all input/output files
-    years_list = list(range(years[0], years[-1]))
+    years_list = list(range(years[0], years[-1] + 1))
     in_files = [f"{src_path}fh.fesom.{y}.nc" for y in years_list]
     out_files = [f"{savepath}subshelf_heatflux_{mask['name']}.{y}.nc" for y in years_list]
     
@@ -251,7 +251,7 @@ def fesom_subshelf_heatflux(src_path, mesh_diag_path, mesh_path, mask, years=(19
 
     return
     
-def freshwaterflux_to_massflux_Gty(src_path, dst_path, rho_fw=1000, log=True):
+def freshwaterflux_to_massflux_Gty(src_path, dst_path, rho_fw=1000, year=None, log=True):
     """
     Convert monthly mean subshelf melt time series (m³/s) into annual integrated
     mass fluxes (Gt/yr).
@@ -275,13 +275,18 @@ def freshwaterflux_to_massflux_Gty(src_path, dst_path, rho_fw=1000, log=True):
     rho_fw : float, default 1000
         Density of freshwater in kg/m³.  
         Used to convert freshwater volume flux (m³/s) into mass flux (kg/s).
+    year : int, optional
+        If specified, only process files for this year. If None, process all files.
     log : bool, default True
         If True, print progress messages when opening, skipping, or saving files.
     """
 
     print("\n--> Convert freshwaterflux to massflux Gty...")
 
-    files2process = np.sort(glob.glob(f"{src_path}subshelf_melt*.nc"))
+    if year is not None:
+        files2process = np.sort(glob.glob(f"{src_path}subshelf_melt*.{year}.nc"))
+    else:
+        files2process = np.sort(glob.glob(f"{src_path}subshelf_melt*.nc"))
     
     # Open files with cftime decoder
     time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
@@ -324,7 +329,7 @@ def freshwaterflux_to_massflux_Gty(src_path, dst_path, rho_fw=1000, log=True):
 
     return 
 
-def freshwaterflux_to_massflux_Gtm(src_path, dst_path, rho_fw=1000, log=True):
+def freshwaterflux_to_massflux_Gtm(src_path, dst_path, rho_fw=1000, year=None, log=True):
     """
     Convert monthly mean subshelf melt time series (m³/s) into monthly integrated
     mass fluxes (Gt/month).
@@ -348,13 +353,18 @@ def freshwaterflux_to_massflux_Gtm(src_path, dst_path, rho_fw=1000, log=True):
     rho_fw : float, default 1000
         Density of freshwater in kg/m³.  
         Used to convert freshwater volume flux (m³/s) into mass flux (kg/s).
+    year : int, optional
+        If specified, only process files for this year. If None, process all files.
     log : bool, default True
         If True, print progress messages when opening, skipping, or saving files.
     """
 
     print("\n--> Convert freshwaterflux to massflux Gtm...")
 
-    files2process = np.sort(glob.glob(f"{src_path}subshelf_melt*.nc"))
+    if year is not None:
+        files2process = np.sort(glob.glob(f"{src_path}subshelf_melt*.{year}.nc"))
+    else:
+        files2process = np.sort(glob.glob(f"{src_path}subshelf_melt*.nc"))
     
     # Open files with cftime decoder
     time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
@@ -483,7 +493,7 @@ def fesom_subshelf_hydrography(src_path, mesh_diag_path, mesh_path, mask, years=
         )
 
         # --- subset years ---
-        ds = ds.sel(time=slice(f"{years[0]}", f"{years[-1]-1}"))
+        ds = ds.sel(time=slice(f"{years[0]}", f"{years[-1]}"))
 
         # --- subset nodes early ---
         ds = ds.isel(nod2=node_mask)
@@ -501,7 +511,7 @@ def fesom_subshelf_hydrography(src_path, mesh_diag_path, mesh_path, mask, years=
         result = result.chunk({'time': 12})
 
         # --- split ONLY at write stage ---
-        years_range = np.arange(years[0], years[-1])
+        years_range = np.arange(years[0], years[-1] + 1)
 
         for y in years_range:
             yearly = result.sel(time=str(y))

@@ -39,7 +39,7 @@ def fesom_calving_flux(src_path, meshpath, mesh_diag_path, runoff_maps, basin=66
 
     if which == 'runoff_solid':
         # load files
-        files = [f"{src_path}/runoff_solid.fesom.{y}.nc" for y in range(years[0], years[1])]
+        files = [f"{src_path}/runoff_solid.fesom.{y}.nc" for y in range(years[0], years[1] + 1)]
         ds_calving = xr.open_mfdataset(files, combine='by_coords', decode_times=time_coder)
 
         # build mask
@@ -47,11 +47,11 @@ def fesom_calving_flux(src_path, meshpath, mesh_diag_path, runoff_maps, basin=66
         calving = (ds_calving["runoff_solid"].where(ds_mask.basin_id == basin, 0) * mesh_diag["nod_area"].isel(nz=0)).sum(dim='nod2')# m3/s montly mean
 
     # convert to Gt/year
-    sec = seconds_per_month([y for y in range(years[0], years[1])])
+    sec = seconds_per_month([y for y in range(years[0], years[1] + 1)])
     calving = calving * sec * 1e-9 # m3/s monthly mean to Gt per month
 
     # Split the monthly data into chunks for each individual year and save as xarray dataset
-    for y in range(years[0], years[1]):
+    for y in range(years[0], years[1] + 1):
         calving_year = calving.sel(time=calving.time.dt.year == y)
         calving_year = calving_year.to_dataset(name='calving_GTM')
         calving_year['calving_GTM'].attrs['units'] = 'Gt per month'

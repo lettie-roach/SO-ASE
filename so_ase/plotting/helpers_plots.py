@@ -145,3 +145,43 @@ def plot_linear_trend_ci(ax, x, y, color='b', alpha=0.1, label='Linear trend'):
     slope_ci = t_val * stderr
 
     return slope, intercept, slope_ci
+
+def colored_rim(ax, cmap="twilight", offset=.55, N=360, lw=6):
+    """
+    Plot a colored rim around a polar plot, to e.g. highlight a seasonal cycle.
+    
+    Parameters
+    ----------
+    ax : matplotlib.axes.Axes
+        The axes to plot on.
+    cmap : str, optional
+        Colormap for the rim. Default is "twilight".
+    offset : float, optional
+        Offset for the colormap. Default is 0.55.
+    N : int, optional
+        Number of segments for the rim. Default is 360.
+    lw : int, optional
+        Line width for the rim. Default is 6.
+    
+    Returns
+    -------
+    None
+    """
+    r = ax.get_rmax()
+    ax.spines['polar'].set_visible(False)
+    
+    cmap = plt.get_cmap(cmap)
+    
+    theta = np.linspace(0, 2*np.pi, N + 1)
+    
+    for i in range(N):
+        ax1.plot(
+            theta[i:i+2],
+            [r, r],
+            color=cmap((i/N + offset) % 1),
+            lw=lw,
+            solid_capstyle="butt",
+            clip_on=False,
+            zorder=100,
+        )
+    return
