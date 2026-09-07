@@ -111,6 +111,8 @@ def fesom_sea_ice_area(
     # Open files with cftime decoder
     time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
     ds = xr.open_mfdataset(files2load, decode_times=time_coder, chunks={"time": 12})
+    if 'nz' in ds.dims:
+        ds = ds.drop_vars('nz')
 
     # Crop datasets
     ds_cropped = ds.isel(nod2=inds)
@@ -245,6 +247,9 @@ def fesom_sea_ice_volume(
     # Open files with cftime decoder
     time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
     ds = xr.open_mfdataset(files2load, decode_times=time_coder, chunks={"time": 12})
+    if 'nz' in ds.dims:
+        ds = ds.drop_vars('nz')
+
 
     # Crop datasets
     ds_cropped = ds.isel(nod2=inds)
@@ -389,6 +394,8 @@ def fesom_sea_ice_extent(
     # Open files with cftime decoder
     time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
     ds = xr.open_mfdataset(files2load, decode_times=time_coder, chunks={"time": 12})
+    if 'nz' in ds.dims:
+        ds = ds.drop_vars('nz')
 
     # Crop datasets
     ds_cropped = ds.isel(nod2=inds)
@@ -424,7 +431,6 @@ def fesom_sea_ice_extent(
 
         if log:
             print(f"Saved: {name}", flush=True)
-
 
     if log:
         print("All done!", flush=True)
