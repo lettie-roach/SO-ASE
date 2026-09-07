@@ -10,8 +10,8 @@ def fesom_sea_ice_area(
     src_path,
     mesh_diag_path,
     years=(1979, 2025),
-    box=[-180, 180, -90, -60],
-    siconc_threshold=0.15,
+    box=[-180, 180, -90, -40],
+    siconc_threshold=0.0,
     savepath='./',
     log=True
 ):
@@ -156,7 +156,7 @@ def fesom_sea_ice_volume(
     src_path, 
     mesh_diag_path,
     years=(1979, 2015), 
-    box=[-180, 180, -90, -60], 
+    box=[-180, 180, -90, -40], 
     savepath='./',
     log=True
 ):
@@ -291,7 +291,7 @@ def fesom_sea_ice_extent(
     src_path,
     mesh_diag_path,
     years=(1979, 2025),
-    box=[-180, 180, -90, -60],
+    box=[-180, 180, -90, -40],
     siconc_threshold=0.15,
     savepath='./',
     log=True
