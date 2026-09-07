@@ -11,7 +11,6 @@ def nsidc_ice_diag(src_path,
     years=(1979, 2015),
     box=[-180, 180, -90, -50],
     siconc_threshold=0.15,
-    grouping='annual.mean',
     version=5,
     diag='area',               
     log=True):
@@ -33,8 +32,6 @@ def nsidc_ice_diag(src_path,
         Geographic bounding box [lon_min, lon_max, lat_min, lat_max] for area calculation.
     siconc_threshold : float, optional
         Sea ice concentration threshold above which a grid cell is counted as ice-covered (default is 0.15).
-    grouping : {'annual.mean', 'annual.max', 'annual.min', 'monthly.mean'}, optional
-        Temporal aggregation applied to the computed sea-ice diagnostic. The default is 'annual.mean'.
     version : {5, 6}, optional
         NSIDC product version. Determines the variable name used during calculation.
     diag : {'area', 'extent'}, optional
@@ -102,15 +99,6 @@ def nsidc_ice_diag(src_path,
         f"Longitude: {box[0]}E to {box[1]}E, Latitude: {box[2]}N to {box[3]}N"
     )
 
-    if grouping == 'annual.mean':
-        result = result.groupby('time.year').mean('time')
-    elif grouping == 'annual.max':
-        result = result.groupby('time.year').max('time')
-    elif grouping == 'annual.min':
-        result = result.groupby('time.year').min('time')
-    elif grouping == 'monthly.mean':
-        pass
-    
     print('Done!')
     return result
     
@@ -118,7 +106,6 @@ def hadlsst_ice_area(src_path,
     years=(1979, 2015),
     box=[-180, 180, -90, -50],
     siconc_threshold=0.15,
-    grouping='annual.mean',
     log=True):
 
     """
@@ -137,8 +124,6 @@ def hadlsst_ice_area(src_path,
         Geographic bounding box [lon_min, lon_max, lat_min, lat_max] for area calculation.
     siconc_threshold : float, optional
         Sea ice concentration threshold above which a grid cell is counted as ice-covered (default is 0.15).
-    grouping : {'annual.mean', 'annual.max', 'annual.min', 'monthly.mean'}, optional
-        Temporal aggregation applied to the computed sea-ice diagnostic. The default is 'annual.mean'.
     log : bool, optional
         If True, print progress messages during processing.
 
@@ -186,15 +171,6 @@ def hadlsst_ice_area(src_path,
         f"Longitude: {box[0]}E to {box[1]}E, Latitude: {box[2]}N to {box[3]}N"
     )
 
-    if grouping == 'annual.mean':
-        result = result.groupby('time.year').mean('time')
-    elif grouping == 'annual.max':
-        result = result.groupby('time.year').max('time')
-    elif grouping == 'annual.min':
-        result = result.groupby('time.year').min('time')
-    elif grouping == 'monthly.mean':
-        pass
-    
     print('Done!')
     return result
 
@@ -202,7 +178,6 @@ def osisaf_ice_diag(src_path,
     years=(1979, 2015),
     box=[-180, 180, -90, -50],
     siconc_threshold=0.15,
-    grouping='annual.mean',
     diag='area',               
     log=True):
 
@@ -223,8 +198,6 @@ def osisaf_ice_diag(src_path,
         Geographic bounding box [lon_min, lon_max, lat_min, lat_max] for area calculation.
     siconc_threshold : float, optional
         Sea ice concentration threshold above which a grid cell is counted as ice-covered (default is 0.15).
-    grouping : {'annual.mean', 'annual.max', 'annual.min', 'monthly.mean'}, optional
-        Temporal aggregation applied to the computed sea-ice diagnostic. The default is 'annual.mean'.
     diag : {'area', 'extent'}, optional
         Which diagnostic to compute after filtering all cells exceeding the siconc_threshold: 'area' (concentration × cell area) or 'extent'(area of ALL cells exceeding siconc_threshold)
     log : bool, optional
@@ -291,14 +264,5 @@ def osisaf_ice_diag(src_path,
         f"Longitude: {box[0]}E to {box[1]}E, Latitude: {box[2]}N to {box[3]}N"
     )
 
-    if grouping == 'annual.mean':
-        result = result.groupby('time.year').mean('time')
-    elif grouping == 'annual.max':
-        result = result.groupby('time.year').max('time')
-    elif grouping == 'annual.min':
-        result = result.groupby('time.year').min('time')
-    elif grouping == 'monthly.mean':
-        pass
-    
     print('Done!')
     return result
