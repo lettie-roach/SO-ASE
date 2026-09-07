@@ -53,7 +53,7 @@ def nsidc_ice_diag(src_path,
 
     """
 
-    files2load = [f"{src_path}siconc.{y}.nc" for y in range(years[0], years[1])]
+    files2load = [f"{src_path}siconc.{y}.nc" for y in range(years[0], years[1] + 1)]
 
     if version==6:
         var = 'cdr_seaice_conc_monthly'
@@ -152,7 +152,7 @@ def hadlsst_ice_area(src_path,
     - Compute grid cell size from lat/lon
     """
 
-    files2load = [f"{src_path}siconc.{y}.nc" for y in range(years[0], years[1])]
+    files2load = [f"{src_path}siconc.{y}.nc" for y in range(years[0], years[1] + 1)]
 
     # Open files with cftime decoder
     time_coder = xr.coders.CFDatetimeCoder(use_cftime=True)
@@ -245,7 +245,7 @@ def osisaf_ice_diag(src_path,
     
     files2load = []
 
-    for y in range(years[0], years[1]):
+    for y in range(years[0], years[1]+1):
         files2load.extend(glob.glob(f"{src_path}/ice_conc_sh*{y}*.nc"))
 
     files2load = sorted(files2load) 
