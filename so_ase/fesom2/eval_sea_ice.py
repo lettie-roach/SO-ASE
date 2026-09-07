@@ -62,9 +62,8 @@ def fesom_sea_ice_area(
 
     Returns
     -------
-    None
-        The function does not return any objects. Results are written directly
-        to disk as NetCDF files.
+    Concatenated sea ice area dataset
+        
     """
 
     def format_lat(lat):
@@ -150,7 +149,7 @@ def fesom_sea_ice_area(
 
     if log:
         print("All done!", flush=True)
-    return
+    return ds_out
 
 def fesom_sea_ice_volume(
     src_path, 
@@ -191,9 +190,7 @@ def fesom_sea_ice_volume(
 
     Returns
     -------
-    None
-        The function does not return any objects. Results are written directly
-        to disk as NetCDF files.
+    Concatenated sea ice volume dataset
 
     Notes
     -----
@@ -286,7 +283,8 @@ def fesom_sea_ice_volume(
     if log:
         print("All done!", flush=True)
 
-    
+    return ds_out
+
 def fesom_sea_ice_extent(
     src_path,
     mesh_diag_path,
@@ -343,9 +341,8 @@ def fesom_sea_ice_extent(
 
     Returns
     -------
-    None
-        The function does not return any objects. Results are written directly
-        to disk as NetCDF files.
+    Concatenated sea ice extent file
+
     """
 
     def format_lat(lat):
@@ -431,3 +428,5 @@ def fesom_sea_ice_extent(
 
     if log:
         print("All done!", flush=True)
+
+    return ds_out
